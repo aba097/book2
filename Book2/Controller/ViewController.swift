@@ -37,7 +37,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         collectionmodel.vc = self
         collectionmodel.CollectionView = self.CollectionView
-        collectionmodel.setup()
+        fileloadAlert(collectionmodel.setup())
         
         //共有フォルダを表示させるだけの関数
         //testsave()
@@ -68,6 +68,36 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         SearchBar.delegate = self
         
         CollectionView.delegate = self
+    }
+    
+    //ファイル読み込み時のエラーをAlertする
+    func fileloadAlert(_ msg: String){
+        var alertMsg = ""
+        
+        switch msg {
+        case "readErrorId" :
+            alertMsg = "Adminファイルが読み込めませんでした"
+        case "datanum0" :
+            alertMsg = "Adminファイルのデータ数が0件です"
+        case "readErrorTitle" :
+            alertMsg = "Titleファイルが読み込めませんでした"
+        case "readErrorAuthor" :
+            alertMsg = "Authorファイルが読み込めませんでした"
+        case "readErrorPublisher" :
+            alertMsg = "Publisherファイルが読み込めませんでした"
+        case "readErrorBorrowreturn" :
+            alertMsg = "Borrowreturnファイルが読み込めませんでした"
+        case "readErrorUser" :
+            alertMsg = "userファイルが読み込めませんでした"
+        default: break
+        }
+        
+        if msg != "fileloadsuccess" {
+            //alert
+            let alert = UIAlertController(title: "error", message: alertMsg, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
   
     

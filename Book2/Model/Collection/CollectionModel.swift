@@ -21,7 +21,7 @@ class CollectionModel{
     
     let refreshcontrol = UIRefreshControl()
 
-    func setup(){
+    func setup() -> String{
         
         //refresh　下に引っ張ったときの動作を設定
         CollectionView.refreshControl = refreshcontrol
@@ -30,10 +30,13 @@ class CollectionModel{
         //データ読み込み
         let result = bookdata.fileoperations.fileload(&bookdata)
         
-    
+        if result != "fileloadsuccess" {
+            return result
+        }
+        
         refresh()
         
-       
+        return "fileloadsuccess"
     }
     
     //ここにfileloadしてもいいかも

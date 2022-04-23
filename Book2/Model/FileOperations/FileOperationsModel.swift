@@ -94,7 +94,7 @@ class FileOperationsModel{
             }
         } catch {
             print("Error: \(error)")
-            return "readErrorAuthor"
+            return "readErrorPublisher"
         }
         
         //borrowreturn
@@ -133,8 +133,7 @@ class FileOperationsModel{
             do {
                 data.comments[data.ids[i]] = try String(contentsOf: fileUrl)
             }catch {
-                print("Error: \(error)")
-                return "readErrorComment: " + String(data.ids[i])
+                //本idに対応するcommentファイルが存在しない
             }
         }
         
