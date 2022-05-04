@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina6_0" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -14,11 +14,11 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Book2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <pickerView tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V5v-pk-Rhq">
-                                <rect key="frame" x="0.0" y="226" width="273" height="51"/>
+                                <rect key="frame" x="0.0" y="226" width="290" height="51"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="51" id="MQE-NY-1Yr"/>
                                 </constraints>
@@ -42,20 +42,20 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vjk-lq-12v">
-                                <rect key="frame" x="0.0" y="135" width="390" height="51"/>
+                                <rect key="frame" x="0.0" y="135" width="414" height="51"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="51" id="9wq-DV-cqP"/>
                                 </constraints>
                             </pickerView>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="MYD-Jc-D8Q">
-                                <rect key="frame" x="0.0" y="79" width="390" height="51"/>
+                            <searchBar contentMode="redraw" text="" translatesAutoresizingMaskIntoConstraints="NO" id="MYD-Jc-D8Q">
+                                <rect key="frame" x="0.0" y="79" width="414" height="51"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="51" id="pRb-7w-hN7"/>
                                 </constraints>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="7Xf-bd-XFx">
-                                <rect key="frame" x="0.0" y="282" width="390" height="552"/>
+                                <rect key="frame" x="0.0" y="282" width="414" height="604"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="rde-LB-Thj">
                                     <size key="itemSize" width="387" height="329"/>
@@ -65,7 +65,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="BhL-Ha-fFy" customClass="CollectionViewCell" customModule="Book2" customModuleProvider="target">
-                                        <rect key="frame" x="1.6666666666666667" y="0.0" width="387" height="329"/>
+                                        <rect key="frame" x="13.5" y="0.0" width="387" height="329"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ikS-Zw-vBd">
                                             <rect key="frame" x="0.0" y="0.0" width="387" height="329"/>
@@ -152,7 +152,7 @@
                                 </connections>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="96x-Z5-oQV">
-                                <rect key="frame" x="315" y="49" width="75" height="30"/>
+                                <rect key="frame" x="339" y="49" width="75" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="bad-63-7Ap"/>
                                     <constraint firstAttribute="height" constant="30" id="j0s-3r-EIJ"/>
@@ -164,7 +164,7 @@
                                 </connections>
                             </button>
                             <pickerView tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="51h-oE-k1b">
-                                <rect key="frame" x="273" y="226" width="117" height="51"/>
+                                <rect key="frame" x="290" y="226" width="124" height="51"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="51" id="oZS-55-Pws"/>
                                 </constraints>
@@ -210,7 +210,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="32.307692307692307" y="76.777251184834114"/>
+            <point key="canvasLocation" x="31.884057971014496" y="76.339285714285708"/>
         </scene>
     </scenes>
     <resources>

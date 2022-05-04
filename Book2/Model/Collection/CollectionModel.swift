@@ -20,33 +20,78 @@ class CollectionModel{
     var cellselected = 0 //選択したcell
     
     let refreshcontrol = UIRefreshControl()
-
+    
     func setup() -> String{
         
         //refresh　下に引っ張ったときの動作を設定
         CollectionView.refreshControl = refreshcontrol
         refreshcontrol.addTarget(self, action: #selector(refresh), for: .valueChanged)
-      
-        //データ読み込み
-        let result = bookdata.fileoperations.fileload(&bookdata)
         
-        if result != "fileloadsuccess" {
+        let result = refresh()
+        if result != "success" {
+            return result
+        }
+        return "success"
+    }
+    
+    //ファイル読み込み
+    func load() -> String {
+        //データ読み込み
+        var result = bookdata.bookLoad()
+        if result != "success" {
+            return result
+        }
+    
+        result = bookdata.jsonParse()
+        if result != "success" {
             return result
         }
         
-        refresh()
-        
-        return "fileloadsuccess"
+        result = bookdata.userLoad()
+        if result != "success" {
+            return result
+        }
+
+        return "success"
     }
     
-    //ここにfileloadしてもいいかも
-    @objc func refresh(){
+    //本の貸し借り変更
+    func borrowreturnAction(_ action: String, _ user: String, _ idx: Int) -> String {
+        //json読み込み
+        var result = bookdata.bookLoad()
+        if result != "success" {
+            return result
+        }
+        
+        //json変更
+        result = bookdata.borrowreturnAction(action, user, idx)
+        if result != "success" {
+            return result
+        }
+        
+        //ファイル読み込み
+        result = refresh()
+        if result != "success" {
+            return result
+        }
+        
+        return "success"
+    }
+    
+    @objc func refresh() -> String{
+        
+        //ファイル読み込み
+        let result = load()
+        if result != "success" {
+            return result
+        }
         
         bookdata.setDiplayData(searchtext: vc.SearchBar.text, searchtarget: vc.searchpicker.getTarget(), sortcategorytarget: vc.sortcategorypicker.getCategoryTarget(), sortordertarget: vc.sortorderpicker.getOrderTarget())
-                
-        cells = []
+    
         CollectionView.reloadData()
-        
         CollectionView.refreshControl?.endRefreshing()
+        
+        return "success"
     }
+    
 }

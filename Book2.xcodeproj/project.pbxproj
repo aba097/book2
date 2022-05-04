@@ -19,7 +19,6 @@
 		43F589492725F0610066D81D /* CollectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F589482725F0610066D81D /* CollectionModel.swift */; };
 		43F5894B272601CE0066D81D /* SortOrderPickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F5894A272601CE0066D81D /* SortOrderPickerModel.swift */; };
 		43F5894D2727773F0066D81D /* BookDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F5894C2727773F0066D81D /* BookDataModel.swift */; };
-		43F5894F272777D30066D81D /* FileOperationsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F5894E272777D30066D81D /* FileOperationsModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,7 +36,6 @@
 		43F589482725F0610066D81D /* CollectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionModel.swift; sourceTree = "<group>"; };
 		43F5894A272601CE0066D81D /* SortOrderPickerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortOrderPickerModel.swift; sourceTree = "<group>"; };
 		43F5894C2727773F0066D81D /* BookDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDataModel.swift; sourceTree = "<group>"; };
-		43F5894E272777D30066D81D /* FileOperationsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileOperationsModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,7 +94,6 @@
 			children = (
 				43F589472725F0170066D81D /* Collection */,
 				43F589462725EEFB0066D81D /* Data */,
-				43F589452725EEEE0066D81D /* FileOperations */,
 				43F589422725EB800066D81D /* Picker */,
 			);
 			path = Model;
@@ -118,14 +115,6 @@
 				43F5894A272601CE0066D81D /* SortOrderPickerModel.swift */,
 			);
 			path = Picker;
-			sourceTree = "<group>";
-		};
-		43F589452725EEEE0066D81D /* FileOperations */ = {
-			isa = PBXGroup;
-			children = (
-				43F5894E272777D30066D81D /* FileOperationsModel.swift */,
-			);
-			path = FileOperations;
 			sourceTree = "<group>";
 		};
 		43F589462725EEFB0066D81D /* Data */ = {
@@ -215,7 +204,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				43F5894B272601CE0066D81D /* SortOrderPickerModel.swift in Sources */,
-				43F5894F272777D30066D81D /* FileOperationsModel.swift in Sources */,
 				43F5892C2725C9B20066D81D /* ViewController.swift in Sources */,
 				43F589412725EAD50066D81D /* SearchPickerModel.swift in Sources */,
 				43F589282725C9B20066D81D /* AppDelegate.swift in Sources */,
