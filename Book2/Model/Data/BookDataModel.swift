@@ -166,6 +166,7 @@ class BookDataModel {
     
     //本の表示画面の更新
     func setDiplayData(searchtext: String?, searchtarget: String, sortcategorytarget: String, sortordertarget: String){
+    
         currentids = []
         
         //本が存在しない
@@ -176,8 +177,9 @@ class BookDataModel {
         if searchtext == nil || searchtext! == "" {
             currentids = ids
         }else{
-            
+            //表示するidxをtrueする
             var idx = Array(repeating: false, count: ids[ids.count - 1] + 1)
+
             //タイトル名
             if searchtarget == "全て" || searchtarget == "タイトル" {
                 for i in 0 ..< titles.count {
@@ -211,19 +213,20 @@ class BookDataModel {
                     }
                 }
             }
-            
-            //貸出し中の本のみ
-            if searchtarget == "貸出中" {
-                for i in 0 ..< state.count {
-                    if ids.firstIndex(of: i) != nil && state[i] != "" {
-                        idx[i] = true
-                    }
-                }
-            }
-            
             //tureのidのみ表示用としてcurrentidsに追加
             for i in 0 ..< idx.count{
                 if idx[i] {
+                    currentids.append(i)
+                }
+            }
+        }
+        
+        //貸出し中の本のみ
+        if searchtarget == "貸出中" {
+            currentids = []
+            for i in 0 ..< state.count {
+                //存在するi(=id)で借りられている
+                if ids.firstIndex(of: i) != nil && state[i] != "" {
                     currentids.append(i)
                 }
             }
