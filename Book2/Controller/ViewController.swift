@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftyDropbox
 
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UISearchBarDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate {
 
@@ -23,9 +24,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     let searchpicker = SearchPickerModel()
     let sortcategorypicker = SortCategoryPickerModel()
     let sortorderpicker = SortOrderPickerModel()
+    let dropboxmodel = DropBoxModel.shared
 
     private let collectionmodel = CollectionModel()
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +36,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         collectionmodel.vc = self
         collectionmodel.CollectionView = self.CollectionView
+        dropboxmodel.vc = self
         fileLoadAlert(collectionmodel.setup())
     }
     
@@ -190,6 +192,17 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             //idxは本id
             //借りる
             if collectionmodel.bookdata.state[idx] == "" {
+                
+                //ユーザ一覧を再読み込みする
+                let msg = collectionmodel.bookdata.userLoad()
+                if msg != "success" {
+                    //alert
+                    let alert = UIAlertController(title: "error", message: msg, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default))
+                    self.present(alert, animated: true, completion: nil)
+                    return
+                }
+                
                 //アラート生成
                 let alert: UIAlertController = UIAlertController(title: "ユーザを選択してください", message:  "", preferredStyle:  UIAlertController.Style.alert)
                 
@@ -312,10 +325,62 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         }
         
     }
+    
+    func Download(){
+        //bookdata.jsonとhistory.jsonをダウンロードする
+        //セマフォはサブスレッドに適用する. Main Threadに適用すると認証が止まってしまう
+        DispatchQueue.global(qos: .default).async {
+            DispatchQueue.main.async {
+                //ダウンロード
+                // 認証をセマフォでデットロックしてしまうためMain Threadで実行する
+                self.dropboxmodel.download()
+            }
+            //sginalはダウンロードが終了後行われる
+            self.dropboxmodel.downloadSemaphore.wait()
+            //アラートの表示はメインスレッドで行う
+            DispatchQueue.main.sync {
+                if self.dropboxmodel.downloadState != "success" {
+                    let alert = UIAlertController(title: "error", message: nil, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: self.dropboxmodel.downloadState, style: .default))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+        }
+    }
         
-    //同期ボタン
-    @IBAction func updateAction(_ sender: Any) {
-        fileLoadAlert(collectionmodel.refresh())
+    //認証ボタン
+    @IBAction func AuthenticationAction(_ sender: Any) {
+        //認証を確認する
+        //セマフォはサブスレッドに適用する. Main Threadに適用すると認証が止まってしまう
+        //未ログイン
+      //  if DropboxClientsManager.authorizedClient == nil {
+            DispatchQueue.global(qos: .default).async {
+                DispatchQueue.main.async {
+                    //認証
+                    // 認証をセマフォでデットロックしてしまうためMain Threadで実行する
+                    self.dropboxmodel.authentication()
+                }
+                //sginalは認証が終了後SceneDelegate.swiftで行われる
+                self.dropboxmodel.authSemaphore.wait()
+                //アラートの表示はメインスレッドで行う
+                DispatchQueue.main.sync {
+                    if self.dropboxmodel.authState {
+                        let alert = UIAlertController(title: "success", message: "認証成功", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(alert, animated: true, completion: nil)
+                    }else{
+                        let alert = UIAlertController(title: "error", message: "認証失敗", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                }
+            }
+        //ログイン済み
+       // }else{
+       //     let alert = UIAlertController(title: "success", message: "認証済み", preferredStyle: .alert)
+       //     alert.addAction(UIAlertAction(title: "OK", style: .default))
+       //     self.present(alert, animated: true, completion: nil)
+      // }
     }
     
 }

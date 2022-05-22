@@ -6,12 +6,44 @@
 //
 
 import UIKit
+import SwiftyDropbox
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    
+    var dropboxmodel = DropBoxModel.shared
+    
+    //認証結果を受け取る
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>){
+        // コールバックで来たURLの取得
+        guard let url = URLContexts.first?.url else {
+          return
+        }
+        
+        let oauthCompletion: DropboxOAuthCompletion = {
+            if let authResult = $0 {
+                switch authResult {
+                case .success:
+                    self.dropboxmodel.authState = true
+                    self.dropboxmodel.authSemaphore.signal()
+                    print("Success! User is logged into DropboxClientsManager.")
+                case .cancel:
+                    self.dropboxmodel.authState = false
+                    self.dropboxmodel.authSemaphore.signal()
+                    print("Authorization flow was manually canceled by user!")
+                case .error(_, let description):
+                    self.dropboxmodel.authState = false
+                    self.dropboxmodel.authSemaphore.signal()
+                    print("Error: \(String(describing: description))")
+                }
+            }
+        }
 
-
+        DropboxClientsManager.handleRedirectURL(url, completion: oauthCompletion)
+        return
+    }
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.

@@ -158,9 +158,9 @@
                                     <constraint firstAttribute="height" constant="30" id="j0s-3r-EIJ"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="ArialRoundedMTBold" family="Arial Rounded MT Bold" pointSize="15"/>
-                                <state key="normal" title="Update"/>
+                                <state key="normal" title="AuthC"/>
                                 <connections>
-                                    <action selector="updateAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TzE-Vw-hC1"/>
+                                    <action selector="AuthenticationAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fHT-IW-Jlh"/>
                                 </connections>
                             </button>
                             <pickerView tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="51h-oE-k1b">

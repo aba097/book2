@@ -15,10 +15,6 @@ class CollectionModel{
     
     var bookdata = BookDataModel()
     
-    //貸し借り状態を変える用
-    var cells:[CollectionViewCell] = []
-    var cellselected = 0 //選択したcell
-    
     let refreshcontrol = UIRefreshControl()
     
     func setup() -> String{
