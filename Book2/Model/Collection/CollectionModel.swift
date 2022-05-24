@@ -15,6 +15,9 @@ class CollectionModel{
     
     var bookdata = BookDataModel()
     
+    //貸し借りを変更する本のid
+    var targetBookIdx = 0
+    
     let refreshcontrol = UIRefreshControl()
     
     func setup(){
@@ -31,6 +34,8 @@ class CollectionModel{
         vc.loadBook()
         
         CollectionView.refreshControl?.endRefreshing()
+        
+        
     
     }
     
