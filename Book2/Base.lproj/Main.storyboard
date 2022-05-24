@@ -169,6 +169,9 @@
                                     <constraint firstAttribute="height" constant="51" id="oZS-55-Pws"/>
                                 </constraints>
                             </pickerView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="5BP-tR-PBs">
+                                <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -177,6 +180,7 @@
                             <constraint firstItem="7Xf-bd-XFx" firstAttribute="top" secondItem="51h-oE-k1b" secondAttribute="bottom" constant="5" id="8zw-bd-M9e"/>
                             <constraint firstItem="V5v-pk-Rhq" firstAttribute="top" secondItem="tN4-JK-GDI" secondAttribute="bottom" constant="5" id="Cst-uH-T9r"/>
                             <constraint firstItem="V5v-pk-Rhq" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" multiplier="0.7" id="Evb-nV-00g"/>
+                            <constraint firstItem="5BP-tR-PBs" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="FU7-77-8Qd"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="tN4-JK-GDI" secondAttribute="trailing" symbolic="YES" id="G1a-uJ-cgQ"/>
                             <constraint firstItem="7Xf-bd-XFx" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="GbV-6L-2mc"/>
                             <constraint firstItem="wBC-oX-LFH" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="JtI-Lh-qze"/>
@@ -186,6 +190,7 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="wBC-oX-LFH" secondAttribute="trailing" symbolic="YES" id="PQd-a2-hc9"/>
                             <constraint firstItem="Vjk-lq-12v" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="PZp-nz-7sK"/>
                             <constraint firstAttribute="bottom" secondItem="7Xf-bd-XFx" secondAttribute="bottom" constant="10" id="Plw-9h-Qtf"/>
+                            <constraint firstItem="5BP-tR-PBs" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="RCN-O1-7Qp"/>
                             <constraint firstItem="51h-oE-k1b" firstAttribute="top" secondItem="V5v-pk-Rhq" secondAttribute="top" id="Urv-pG-fTF"/>
                             <constraint firstItem="51h-oE-k1b" firstAttribute="leading" secondItem="V5v-pk-Rhq" secondAttribute="trailing" id="Vsr-kn-UJg"/>
                             <constraint firstItem="MYD-Jc-D8Q" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="YpO-jb-0U9"/>
@@ -201,6 +206,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="ActivityIndicatorView" destination="5BP-tR-PBs" id="XdP-mc-fnv"/>
                         <outlet property="CollectionView" destination="7Xf-bd-XFx" id="kAs-Z7-7rx"/>
                         <outlet property="SearchBar" destination="MYD-Jc-D8Q" id="xcY-Zu-eGB"/>
                         <outlet property="SearchPickerView" destination="Vjk-lq-12v" id="enT-kw-xSv"/>

@@ -20,6 +20,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     @IBOutlet weak var CollectionView: UICollectionView!
     
+    @IBOutlet weak var ActivityIndicatorView: UIActivityIndicatorView!
+    
     //インスタンス化
     let searchpicker = SearchPickerModel()
     let sortcategorypicker = SortCategoryPickerModel()
@@ -37,7 +39,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         collectionmodel.vc = self
         collectionmodel.CollectionView = self.CollectionView
         dropboxmodel.vc = self
-        fileLoadAlert(collectionmodel.setup())
+        collectionmodel.setup()
     }
     
     func setDelegate(){
@@ -48,17 +50,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         SearchBar.delegate = self
         
         CollectionView.delegate = self
-    }
-    
-    //ファイル読み込み時のエラーをAlertする
-    func fileLoadAlert(_ msg: String){
-        
-        if msg != "success" {
-            //alert
-            let alert = UIAlertController(title: "error", message: msg, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            self.present(alert, animated: true, completion: nil)
-        }
     }
 
     
@@ -119,7 +110,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // キーボードを閉じる
         view.endEditing(true)
-        fileLoadAlert(collectionmodel.refresh())
+        collectionmodel.refresh()
     }
     
 
@@ -132,7 +123,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     //layout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: self.view.bounds.width, height: 263)
+        return CGSize(width: self.view.bounds.width, height: 308)
     }
     
     //セルの内容
@@ -144,14 +135,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         }
         
         let bookdata = collectionmodel.bookdata
-      
-        //image
-        if bookdata.images[bookdata.currentids[indexPath.row]] != "" {
-            cell.ImageView.image = UIImage(contentsOfFile: bookdata.images[bookdata.currentids[indexPath.row]])
-        }else{
-            cell.ImageView.image = nil
-        }
-        
+    
         //title
         cell.TitleTextView.text = bookdata.titles[bookdata.currentids[indexPath.row]]
        
@@ -193,104 +177,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             //借りる
             if collectionmodel.bookdata.state[idx] == "" {
                 
+                
                 //ユーザ一覧を再読み込みする
-                let msg = collectionmodel.bookdata.userLoad()
-                if msg != "success" {
-                    //alert
-                    let alert = UIAlertController(title: "error", message: msg, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default))
-                    self.present(alert, animated: true, completion: nil)
-                    return
-                }
-                
-                //アラート生成
-                let alert: UIAlertController = UIAlertController(title: "ユーザを選択してください", message:  "", preferredStyle:  UIAlertController.Style.alert)
-                
-                let user0: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[0], style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    self.borrowreturnAlert(self.collectionmodel.borrowreturnAction("borrow", self.collectionmodel.bookdata.users[0], idx))
-                })
-                let user1: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[1], style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    self.borrowreturnAlert(self.collectionmodel.borrowreturnAction("borrow", self.collectionmodel.bookdata.users[1], idx))
-                })
-                let user2: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[2], style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    self.borrowreturnAlert(self.collectionmodel.borrowreturnAction("borrow", self.collectionmodel.bookdata.users[2], idx))
-                })
-                let user3: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[3], style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    self.borrowreturnAlert(self.collectionmodel.borrowreturnAction("borrow", self.collectionmodel.bookdata.users[3], idx))
-                })
-                let user4: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[4], style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    self.borrowreturnAlert(self.collectionmodel.borrowreturnAction("borrow", self.collectionmodel.bookdata.users[4], idx))
-                })
-                let user5: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[5], style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    self.borrowreturnAlert(self.collectionmodel.borrowreturnAction("borrow", self.collectionmodel.bookdata.users[5], idx))
-                })
-                let user6: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[6], style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    self.borrowreturnAlert(self.collectionmodel.borrowreturnAction("borrow", self.collectionmodel.bookdata.users[6], idx))
-                })
-                let user7: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[7], style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    self.borrowreturnAlert(self.collectionmodel.borrowreturnAction("borrow", self.collectionmodel.bookdata.users[7], idx))
-                })
-                let user8: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[8], style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    self.borrowreturnAlert(self.collectionmodel.borrowreturnAction("borrow", self.collectionmodel.bookdata.users[8], idx))
-                })
-                let user9: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[9], style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    self.borrowreturnAlert(self.collectionmodel.borrowreturnAction("borrow", self.collectionmodel.bookdata.users[9], idx))
-                })
-                let user10: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[10], style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    self.borrowreturnAlert(self.collectionmodel.borrowreturnAction("borrow", self.collectionmodel.bookdata.users[10], idx))
-                })
-                let user11: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[11], style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    self.borrowreturnAlert(self.collectionmodel.borrowreturnAction("borrow", self.collectionmodel.bookdata.users[11], idx))
-                })
-                let user12: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[12], style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    self.borrowreturnAlert(self.collectionmodel.borrowreturnAction("borrow", self.collectionmodel.bookdata.users[12], idx))
-                })
-                let user13: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[13], style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    self.borrowreturnAlert(self.collectionmodel.borrowreturnAction("borrow", self.collectionmodel.bookdata.users[13], idx))
-                })
-                let user14: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[14], style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    self.borrowreturnAlert(self.collectionmodel.borrowreturnAction("borrow", self.collectionmodel.bookdata.users[14], idx))
-                })
-                let user15: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[15], style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    self.borrowreturnAlert(self.collectionmodel.borrowreturnAction("borrow", self.collectionmodel.bookdata.users[15], idx))
-                })
-                
-                alert.addAction(UIAlertAction(title: "cancel", style: .default, handler: nil))
-                alert.addAction(user0)
-                alert.addAction(user1)
-                alert.addAction(user2)
-                alert.addAction(user3)
-                alert.addAction(user4)
-                alert.addAction(user5)
-                alert.addAction(user6)
-                alert.addAction(user7)
-                alert.addAction(user8)
-                alert.addAction(user9)
-                alert.addAction(user10)
-                alert.addAction(user11)
-                alert.addAction(user12)
-                alert.addAction(user13)
-                alert.addAction(user14)
-                alert.addAction(user15)
-                
-                present(alert, animated: true, completion: nil)
-                
+                loadUser(idx)
             
             }else{
                 //返す
@@ -298,7 +187,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 
                 let yesaction: UIAlertAction = UIAlertAction(title: "Yes", style: .default, handler:{
                     (action: UIAlertAction!) -> Void in
-                    self.borrowreturnAlert(self.collectionmodel.bookdata.borrowreturnAction("return", self.collectionmodel.bookdata.state[idx], idx))
+                    self.state("return", self.collectionmodel.bookdata.state[idx], idx)
                 })
                 
                 alert.addAction(yesaction)
@@ -326,61 +215,297 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
     }
     
-    func Download(){
-        //bookdata.jsonとhistory.jsonをダウンロードする
+    //認証ボタン
+    @IBAction func AuthenticationAction(_ sender: Any) {
+        //認証する
         //セマフォはサブスレッドに適用する. Main Threadに適用すると認証が止まってしまう
         DispatchQueue.global(qos: .default).async {
             DispatchQueue.main.async {
-                //ダウンロード
+                //認証
                 // 認証をセマフォでデットロックしてしまうためMain Threadで実行する
-                self.dropboxmodel.download()
+                self.dropboxmodel.authentication()
             }
-            //sginalはダウンロードが終了後行われる
-            self.dropboxmodel.downloadSemaphore.wait()
+            //sginalは認証が終了後SceneDelegate.swiftで行われる
+            self.dropboxmodel.authSemaphore.wait()
             //アラートの表示はメインスレッドで行う
             DispatchQueue.main.sync {
-                if self.dropboxmodel.downloadState != "success" {
-                    let alert = UIAlertController(title: "error", message: nil, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: self.dropboxmodel.downloadState, style: .default))
+                if self.dropboxmodel.authState {
+                    let alert = UIAlertController(title: "success", message: "認証成功", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default))
+                    self.present(alert, animated: true, completion: nil)
+                }else{
+                    let alert = UIAlertController(title: "error", message: "認証失敗", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default))
                     self.present(alert, animated: true, completion: nil)
                 }
             }
         }
+     
     }
+    
+    func loadUser(_ idx: Int){
+        //グルグル表示
+        ActivityIndicatorView.startAnimating()
         
-    //認証ボタン
-    @IBAction func AuthenticationAction(_ sender: Any) {
-        //認証を確認する
-        //セマフォはサブスレッドに適用する. Main Threadに適用すると認証が止まってしまう
-        //未ログイン
-      //  if DropboxClientsManager.authorizedClient == nil {
-            DispatchQueue.global(qos: .default).async {
+        DispatchQueue.global(qos: .default).async {
+            DispatchQueue.main.async {
+                //ファイルが存在するか確認
+                self.collectionmodel.bookdata.userExist()
+            }
+            
+            self.collectionmodel.bookdata.existSemaphore.wait()
+            
+            if self.collectionmodel.bookdata.existState == "doDownload" {
                 DispatchQueue.main.async {
-                    //認証
-                    // 認証をセマフォでデットロックしてしまうためMain Threadで実行する
-                    self.dropboxmodel.authentication()
+                    //ダウンロードし，bookdataに格納
+                    self.collectionmodel.bookdata.userDownload()
                 }
-                //sginalは認証が終了後SceneDelegate.swiftで行われる
-                self.dropboxmodel.authSemaphore.wait()
-                //アラートの表示はメインスレッドで行う
-                DispatchQueue.main.sync {
-                    if self.dropboxmodel.authState {
-                        let alert = UIAlertController(title: "success", message: "認証成功", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: .default))
-                        self.present(alert, animated: true, completion: nil)
-                    }else{
-                        let alert = UIAlertController(title: "error", message: "認証失敗", preferredStyle: .alert)
+                //ダウンロード終了後
+                self.collectionmodel.bookdata.downloadSemaphore.wait()
+                
+                if self.collectionmodel.bookdata.downloadState != "success" { //error
+                    DispatchQueue.main.sync {
+                        self.ActivityIndicatorView.stopAnimating()
+            
+                        let alert = UIAlertController(title: "error", message: self.collectionmodel.bookdata.downloadState, preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "OK", style: .default))
                         self.present(alert, animated: true, completion: nil)
                     }
+                }else{
+                    DispatchQueue.main.sync {
+                        self.ActivityIndicatorView.stopAnimating()
+                        //ユーザ一覧表示
+                        self.presentAlert(idx)
+                    }
+                    
+                }
+            }else if self.collectionmodel.bookdata.existState == "notExist" {
+                //defaultuserを用意する
+                self.collectionmodel.bookdata.users = ["user0", "user1", "user2", "user3", "user4", "use5", "user6", "user7", "user8", "user9", "user10", "user11", "user12", "user13", "user14", "user15"]
+                DispatchQueue.main.sync {
+                    self.ActivityIndicatorView.stopAnimating()
+                    //ユーザ一覧表示
+                    self.presentAlert(idx)
+                }
+            }else { //error
+                DispatchQueue.main.sync {
+                    self.ActivityIndicatorView.stopAnimating()
+                    
+                    let alert = UIAlertController(title: "error", message: self.collectionmodel.bookdata.downloadState, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default))
+                    self.present(alert, animated: true, completion: nil)
                 }
             }
-        //ログイン済み
-       // }else{
-       //     let alert = UIAlertController(title: "success", message: "認証済み", preferredStyle: .alert)
-       //     alert.addAction(UIAlertAction(title: "OK", style: .default))
-       //     self.present(alert, animated: true, completion: nil)
-      // }
+        }
+           
+    }
+    
+    func presentAlert(_ idx: Int){
+        let alert: UIAlertController = UIAlertController(title: "ユーザを選択してください", message:  "", preferredStyle:  UIAlertController.Style.alert)
+        
+        let user0: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[0], style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            self.state("borrow", self.collectionmodel.bookdata.users[0], idx)
+        })
+        let user1: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[1], style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            self.state("borrow", self.collectionmodel.bookdata.users[1], idx)
+        })
+        let user2: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[2], style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            self.state("borrow", self.collectionmodel.bookdata.users[2], idx)
+        })
+        let user3: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[3], style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            self.state("borrow", self.collectionmodel.bookdata.users[3], idx)
+        })
+        let user4: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[4], style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            self.state("borrow", self.collectionmodel.bookdata.users[4], idx)
+        })
+        let user5: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[5], style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            self.state("borrow", self.collectionmodel.bookdata.users[5], idx)
+        })
+        let user6: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[6], style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            self.state("borrow", self.collectionmodel.bookdata.users[6], idx)
+        })
+        let user7: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[7], style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            self.state("borrow", self.collectionmodel.bookdata.users[7], idx)
+        })
+        let user8: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[8], style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            self.state("borrow", self.collectionmodel.bookdata.users[8], idx)
+        })
+        let user9: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[9], style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            self.state("borrow", self.collectionmodel.bookdata.users[9], idx)
+        })
+        let user10: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[10], style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            self.state("borrow", self.collectionmodel.bookdata.users[10], idx)
+        })
+        let user11: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[11], style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            self.state("borrow", self.collectionmodel.bookdata.users[11], idx)
+        })
+        let user12: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[12], style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            self.state("borrow", self.collectionmodel.bookdata.users[12], idx)
+        })
+        let user13: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[13], style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            self.state("borrow", self.collectionmodel.bookdata.users[13], idx)
+        })
+        let user14: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[14], style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            self.state("borrow", self.collectionmodel.bookdata.users[14], idx)
+        })
+        let user15: UIAlertAction = UIAlertAction(title: collectionmodel.bookdata.users[15], style: .default, handler:{
+            (action: UIAlertAction!) -> Void in
+            self.state("borrow", self.collectionmodel.bookdata.users[15], idx)
+        })
+        
+        alert.addAction(UIAlertAction(title: "cancel", style: .default, handler: nil))
+        alert.addAction(user0)
+        alert.addAction(user1)
+        alert.addAction(user2)
+        alert.addAction(user3)
+        alert.addAction(user4)
+        alert.addAction(user5)
+        alert.addAction(user6)
+        alert.addAction(user7)
+        alert.addAction(user8)
+        alert.addAction(user9)
+        alert.addAction(user10)
+        alert.addAction(user11)
+        alert.addAction(user12)
+        alert.addAction(user13)
+        alert.addAction(user14)
+        alert.addAction(user15)
+        
+        present(alert, animated: true, completion: nil)
+
+    }
+    
+    //本の貸し借りを変更する
+    func state(_ action: String, _ user: String, _ idx: Int){
+        //グルグル表示
+        ActivityIndicatorView.startAnimating()
+        
+        DispatchQueue.global(qos: .default).async {
+            DispatchQueue.main.async {
+            //ダウンロードし，bookjsonに格納
+            self.collectionmodel.bookdata.bookDownload()
+            }
+            //ダウンロード終了後
+            self.collectionmodel.bookdata.downloadSemaphore.wait()
+            
+            if self.collectionmodel.bookdata.downloadState != "success" { //error
+                DispatchQueue.main.sync {
+                    self.ActivityIndicatorView.stopAnimating()
+        
+                    let alert = UIAlertController(title: "error", message: self.collectionmodel.bookdata.downloadState, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default))
+                    self.present(alert, animated: true, completion: nil)
+                }
+                return
+            }
+            
+            //本の貸し借りを変更する
+            let result = self.collectionmodel.bookdata.borrowreturnAction(action, user, idx)
+            if result != "success" { //error
+                DispatchQueue.main.sync {
+                    self.ActivityIndicatorView.stopAnimating()
+                    let alert = UIAlertController(title: "error", message: result, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }else{ //貸し借り正常に変更
+                DispatchQueue.main.async {
+                    //bookjsonをアップロード
+                    self.collectionmodel.bookdata.bookUpload()
+                }
+                self.collectionmodel.bookdata.uploadSemaphore.wait()
+                
+                //アラートの表示はメインスレッドで行う
+                DispatchQueue.main.sync {
+                    //グルグル非表示
+                    self.ActivityIndicatorView.stopAnimating()
+                    
+                    if self.collectionmodel.bookdata.uploadState !=  "success" { //error
+                        let alert = UIAlertController(title: "error", message: self.collectionmodel.bookdata.uploadState, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(alert, animated: true, completion: nil)
+                    }else{
+                        //アップロード成功
+                        let alert = UIAlertController(title: "success", message: "", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(alert, animated: true, completion: nil)
+                        //再読み込み
+                        self.loadBook()
+                    }
+                }
+            }
+        }
+    }
+    
+    func loadBook(){
+        //グルグル表示
+        ActivityIndicatorView.startAnimating()
+        
+        DispatchQueue.global(qos: .default).async {
+            DispatchQueue.main.async {
+                //ファイルが存在するか確認
+                self.collectionmodel.bookdata.bookExist()
+            }
+            self.collectionmodel.bookdata.existSemaphore.wait()
+            
+            if self.collectionmodel.bookdata.existState == "doDownload" {
+                DispatchQueue.main.async {
+                    //ダウンロードし，bookjsonに格納
+                    self.collectionmodel.bookdata.bookDownload()
+                }
+                //ダウンロード終了後
+                self.collectionmodel.bookdata.downloadSemaphore.wait()
+                
+                if self.collectionmodel.bookdata.downloadState != "success" { //error
+                    DispatchQueue.main.sync {
+                        self.ActivityIndicatorView.stopAnimating()
+            
+                        let alert = UIAlertController(title: "error", message: self.collectionmodel.bookdata.downloadState, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                }else{ //ダウンロード成功
+                    DispatchQueue.main.sync {
+                        self.collectionmodel.bookdata.setDiplayData(searchtext: self.SearchBar.text, searchtarget: self.searchpicker.getTarget(), sortcategorytarget: self.sortcategorypicker.getCategoryTarget(), sortordertarget: self.sortorderpicker.getOrderTarget())
+                        self.collectionmodel.CollectionView.reloadData()
+                        self.ActivityIndicatorView.stopAnimating()
+                    }
+                }
+            }else if self.collectionmodel.bookdata.existState == "notExist" {
+                //空のbookjsonを用意する
+                self.collectionmodel.bookdata.bookjson = []
+                
+                DispatchQueue.main.sync {
+                    self.collectionmodel.bookdata.setDiplayData(searchtext: self.SearchBar.text, searchtarget: self.searchpicker.getTarget(), sortcategorytarget: self.sortcategorypicker.getCategoryTarget(), sortordertarget: self.sortorderpicker.getOrderTarget())
+                    self.collectionmodel.CollectionView.reloadData()
+                    self.ActivityIndicatorView.stopAnimating()
+                }
+                
+            }else { //error
+                DispatchQueue.main.sync {
+                    self.ActivityIndicatorView.stopAnimating()
+                    
+                    let alert = UIAlertController(title: "error", message: self.collectionmodel.bookdata.downloadState, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+        }
     }
     
 }
