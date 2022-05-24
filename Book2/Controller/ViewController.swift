@@ -515,8 +515,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     }
         
     func refresh(){
-        self.collectionmodel.bookdata.setDiplayData(searchtext: self.SearchBar.text, searchtarget: self.searchpicker.getTarget(), sortcategorytarget: self.sortcategorypicker.getCategoryTarget(), sortordertarget: self.sortorderpicker.getOrderTarget())
-        self.CollectionView.reloadData()
+        collectionmodel.bookdata.setDiplayData(searchtext: SearchBar.text, searchtarget: searchpicker.getTarget(), sortcategorytarget: sortcategorypicker.getCategoryTarget(), sortordertarget: sortorderpicker.getOrderTarget())
+        collectionmodel.CollectionView.reloadData()
     }
 
     
