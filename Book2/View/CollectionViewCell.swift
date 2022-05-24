@@ -9,8 +9,6 @@ import UIKit
 
 class CollectionViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var ImageView: UIImageView!
-    
     @IBOutlet weak var TitleTextView: UITextView!
     
     @IBOutlet weak var AuthorTextView: UITextView!
@@ -19,6 +17,16 @@ class CollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var CommentTextView: UITextView!
     
+    @IBOutlet weak var Button: UIButton!
     
+    weak var vc: ViewController!
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        Button.addTarget(self, action: #selector(self.buttonEvent(_:)), for: UIControl.Event.touchUpInside)
+    }
+    
+    @objc func buttonEvent(_ sender: UIButton) {
+        vc.stateAction(sender)
+    }
 }

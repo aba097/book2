@@ -148,57 +148,50 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         //comment
         cell.CommentTextView.text = bookdata.comments[bookdata.currentids[indexPath.row]]
         
-        //借りている場合といない場合で背景色を変化させる
+        //借りている場合といない場合で背景色を変化させる, buttonの表示名を変更する
         if bookdata.state[bookdata.currentids[indexPath.row]] != "" {
             cell.layer.borderColor = UIColor.black.cgColor
             cell.layer.borderWidth = 5
+            cell.Button.setTitle(bookdata.state[bookdata.currentids[indexPath.row]], for: .normal)
         }else{
             cell.layer.borderColor = UIColor.lightGray.cgColor
             cell.layer.borderWidth = 5
+            cell.Button.setTitle("Borrow", for: .normal)
         }
 
-        cell.tag = bookdata.currentids[indexPath.row]
+        cell.vc = self
+        cell.Button.tag = bookdata.currentids[indexPath.row]
         
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(longPress(_:)))
-        longPressGesture.delegate = self
-        cell.addGestureRecognizer(longPressGesture)
-    
         return cell
     }
     
-    //cell Long Press イベント 本の貸し借り
-    @objc func longPress(_ sender: UILongPressGestureRecognizer){
-      
-        //長押し時
-        if sender.state == .began {
+    //cell上のボタンを押したとき，貸し借りを変更する
+    func stateAction(_ sender: UIButton) {
+        
+        let idx = sender.tag as Int
+        //idxは本id
+        //借りる
+        if collectionmodel.bookdata.state[idx] == "" {
             
-            let idx = sender.view!.tag as Int
-            //idxは本id
-            //借りる
-            if collectionmodel.bookdata.state[idx] == "" {
-                
-                
-                //ユーザ一覧を再読み込みする
-                loadUser(idx)
             
-            }else{
-                //返す
-                let alert: UIAlertController = UIAlertController(title: "本を返します", message: collectionmodel.bookdata.state[idx], preferredStyle:  UIAlertController.Style.alert)
+            //ユーザ一覧を再読み込みする
+            loadUser(idx)
+        
+        }else{
+            //返す
+            let alert: UIAlertController = UIAlertController(title: "本を返します", message: collectionmodel.bookdata.state[idx], preferredStyle:  UIAlertController.Style.alert)
+            
+            let yesaction: UIAlertAction = UIAlertAction(title: "Yes", style: .default, handler:{
+                (action: UIAlertAction!) -> Void in
+                self.state("return", self.collectionmodel.bookdata.state[idx], idx)
+            })
+            
+            alert.addAction(yesaction)
+            alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
                 
-                let yesaction: UIAlertAction = UIAlertAction(title: "Yes", style: .default, handler:{
-                    (action: UIAlertAction!) -> Void in
-                    self.state("return", self.collectionmodel.bookdata.state[idx], idx)
-                })
-                
-                alert.addAction(yesaction)
-                alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
-                    
-                self.present(alert, animated: true, completion: nil)
-                
-            }
+            self.present(alert, animated: true, completion: nil)
             
         }
-        
     }
     
     func borrowreturnAlert(_ msg: String) {
