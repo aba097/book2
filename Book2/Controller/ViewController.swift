@@ -206,7 +206,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             //sginalは認証が終了後SceneDelegate.swiftで行われる
             self.dropboxmodel.authSemaphore.wait()
             //アラートの表示はメインスレッドで行う
-            DispatchQueue.main.sync {
+            DispatchQueue.main.async {
                 if self.dropboxmodel.authState {
                     let alert = UIAlertController(title: "success", message: "認証成功", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "OK", style: .default))
@@ -241,13 +241,13 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             }else if self.collectionmodel.bookdata.existState == "notExist" {
                 //defaultuserを用意する
                 self.collectionmodel.bookdata.users = ["user0", "user1", "user2", "user3", "user4", "use5", "user6", "user7", "user8", "user9", "user10", "user11", "user12", "user13", "user14", "user15"]
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async {
                     self.ActivityIndicatorView.stopAnimating()
                     //ユーザ一覧表示
                     self.presentAlert()
                 }
             }else { //error
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async {
                     self.ActivityIndicatorView.stopAnimating()
                     
                     let alert = UIAlertController(title: "error", message: self.collectionmodel.bookdata.downloadState, preferredStyle: .alert)
@@ -270,7 +270,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             self.collectionmodel.bookdata.downloadSemaphore.wait()
             
             if self.collectionmodel.bookdata.downloadState != "success" { //error
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async {
                     self.ActivityIndicatorView.stopAnimating()
         
                     let alert = UIAlertController(title: "error", message: self.collectionmodel.bookdata.downloadState, preferredStyle: .alert)
@@ -278,7 +278,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                     self.present(alert, animated: true, completion: nil)
                 }
             }else{
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async {
                     self.ActivityIndicatorView.stopAnimating()
                     //ユーザ一覧表示
                     self.presentAlert()
@@ -375,7 +375,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         alert.addAction(user15)
         
         present(alert, animated: true, completion: nil)
-
+    
     }
     
     //本の貸し借りを変更する
@@ -388,14 +388,14 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         DispatchQueue.global(qos: .default).async {
             DispatchQueue.main.async {
-            //ダウンロードし，bookjsonに格納
-            self.collectionmodel.bookdata.bookDownload()
+                //ダウンロードし，bookjsonに格納
+                self.collectionmodel.bookdata.bookDownload()
             }
             //ダウンロード終了後
             self.collectionmodel.bookdata.downloadSemaphore.wait()
             
             if self.collectionmodel.bookdata.downloadState != "success" { //error
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async {
                     self.ActivityIndicatorView.stopAnimating()
         
                     let alert = UIAlertController(title: "error", message: self.collectionmodel.bookdata.downloadState, preferredStyle: .alert)
@@ -408,7 +408,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             //本の貸し借りを変更する
             let result = self.collectionmodel.bookdata.borrowreturnAction(action, user, idx)
             if result != "success" { //error
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async {
                     self.ActivityIndicatorView.stopAnimating()
                     let alert = UIAlertController(title: "error", message: result, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "OK", style: .default))
@@ -432,7 +432,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             self.collectionmodel.bookdata.uploadSemaphore.wait()
             
             //アラートの表示はメインスレッドで行う
-            DispatchQueue.main.sync {
+            DispatchQueue.main.async {
                 //グルグル非表示
                 self.ActivityIndicatorView.stopAnimating()
                 
@@ -464,20 +464,20 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             self.collectionmodel.bookdata.existSemaphore.wait()
             if self.collectionmodel.bookdata.existState == "doDownload" {
                 DispatchQueue.main.async {
-                    //本を読み込む
+                    //本を読む
                     self.loadBook()
                 }
             }else if self.collectionmodel.bookdata.existState == "notExist" {
                 //空のbookjsonを用意する
                 self.collectionmodel.bookdata.bookjson = []
                 
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async {
                     self.ActivityIndicatorView.stopAnimating()
                     self.refresh()
                 }
                 
             }else { //error
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async {
                     self.ActivityIndicatorView.stopAnimating()
                     
                     let alert = UIAlertController(title: "error", message: self.collectionmodel.bookdata.downloadState, preferredStyle: .alert)
@@ -498,7 +498,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             self.collectionmodel.bookdata.downloadSemaphore.wait()
             
             if self.collectionmodel.bookdata.downloadState != "success" { //error
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async {
                     self.ActivityIndicatorView.stopAnimating()
         
                     let alert = UIAlertController(title: "error", message: self.collectionmodel.bookdata.downloadState, preferredStyle: .alert)
@@ -506,19 +506,19 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                     self.present(alert, animated: true, completion: nil)
                 }
             }else{ //ダウンロード成功
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async {
                     self.ActivityIndicatorView.stopAnimating()
                     self.refresh()
                 }
             }
         }
     }
-        
+       
+  
     func refresh(){
         collectionmodel.bookdata.setDiplayData(searchtext: SearchBar.text, searchtarget: searchpicker.getTarget(), sortcategorytarget: sortcategorypicker.getCategoryTarget(), sortordertarget: sortorderpicker.getOrderTarget())
         collectionmodel.CollectionView.reloadData()
     }
 
-    
 }
 
