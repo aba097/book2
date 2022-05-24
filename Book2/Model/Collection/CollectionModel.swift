@@ -30,8 +30,8 @@ class CollectionModel{
     }
  
     @objc func refresh(){
-        
-        vc.loadBook()
+        //exist -> downloadbook
+        vc.existBook()
         
         CollectionView.refreshControl?.endRefreshing()
         
