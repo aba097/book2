@@ -150,7 +150,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         //借りている場合といない場合で背景色を変化させる, buttonの表示名を変更する
         if bookdata.state[bookdata.currentids[indexPath.row]] != "" {
-            cell.layer.borderColor = UIColor.black.cgColor
+            cell.layer.borderColor = UIColor.green.cgColor
             cell.layer.borderWidth = 5
             cell.Button.setTitle(bookdata.state[bookdata.currentids[indexPath.row]], for: .normal)
         }else{
