@@ -480,7 +480,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 DispatchQueue.main.async {
                     self.ActivityIndicatorView.stopAnimating()
                     
-                    let alert = UIAlertController(title: "error", message: self.collectionmodel.bookdata.downloadState, preferredStyle: .alert)
+                    let alert = UIAlertController(title: "error", message: self.collectionmodel.bookdata.existState, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "OK", style: .default))
                     self.present(alert, animated: true, completion: nil)
                 }
